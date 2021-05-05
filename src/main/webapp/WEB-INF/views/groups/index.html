@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="style.css" rel="stylesheet" >
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <title>Index</title>
+</head>
+<body>
+
+<h1>Students Accounting Program</h1>
+<div class="bar">
+    <div class="left_bar">
+        <form th:method="GET" th:action="@{/groups/new}">
+            <input type="submit" value="ADD GROUP">
+        </form>
+    </div>
+
+    <div class="right_bar">
+        <input placeholder="Search" type="search" rows="1">
+        <select>
+            <option>Filter</option>
+        </select>
+        <button>SEARCH</button>
+    </div>
+</div>
+<table border="1">
+    <tr>
+        <td class="cell_properties">Group Number</td>
+        <td>Education form</td>
+        <td>Operations</td>
+    <tr>
+
+    <tr th:each="group :${groups}">
+    <td> <a th:href="@{/groups/{group_number}(group_number=${group.getGroupNumber()})}" th:text="${group.getGroupNumber()}" target="_self">link</a></td>
+        <td th:text="${group.getEducationForm()}">form</td>
+        <td>
+            <a th:href="@{/groups/{group_number}/edit(group_number=${group.getGroupNumber()})}">Edit</a>
+            <form th:method="DELETE" th:action="@{/groups/{group_number}(group_number=${group.getGroupNumber()})}">
+                <input type="submit" value="Remove">
+            </form>
+        </td>
+    </tr>
+
+</table>
+
+</body>
+</html>

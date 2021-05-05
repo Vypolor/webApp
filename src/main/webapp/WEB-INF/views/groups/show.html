@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show</title>
+</head>
+<body>
+<p th:text="${group.getGroupNumber()}">VALUE</p>
+<p th:text="${group.getEducationForm()}">VALUE</p>
+</br>
+</br>
+<form th:method="GET" th:action="@{/groups}">
+    <input type="submit" value="BACK">
+</form>
+</br>
+<div class="left_bar">
+    <form th:method="GET" th:action="@{{group_number}/newStudent(group_number=${group_number})}" target="_self">
+        <button>ADD STUDENT</button>
+    </form>
+</div>
+
+<table border="1">
+    <tr>
+        <td>Student ID</td>
+        <td>Full Name</td>
+        <td>Birth Day</td>
+        <td>Education Form</td>
+        <td>Operations</td>
+    <tr>
+
+    <tr th:each="student :${students}">
+        <td th:text="${student.getStudentID()}">ID</td>
+        <td th:text="${student.getSecondName() + ' ' + student.getName() + ' ' + student.getPatronymic()}">fullName</td>
+        <td th:text="${student.getBirthday()}">birthDate</td>
+        <td th:text="${student.getEducationForm()}">form</td>
+        <td>
+            <a th:href="@{/groups/{group_num}/{student_ID}/edit(group_num=${group.getGroupNumber()}, student_ID=${student.getStudentID()})}">Edit</a>
+            <form th:method="DELETE" th:action="@{/groups/{group_number}/{student_ID}(group_number=${student.getGroupNumber()}, student_ID=${student.getStudentID()})}">
+                <input type="submit" value="Remove">
+            </form>
+        </td>
+    </tr>
+
+</table>
+</body>
+</html>

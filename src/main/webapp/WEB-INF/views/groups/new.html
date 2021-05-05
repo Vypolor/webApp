@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New Group</title>
+</head>
+<body>
+<h2>Adding a Group</h2>
+<form th:method="POST" th:action="@{/groups}" th:object="${group}">
+    <label for="number">GROUP NUMBER:</label>
+    <input type="text" th:field="*{groupNumber}" id="number"/>
+    <div style="color:red" th:if="${#fields.hasErrors('groupNumber')}" th:errors="*{groupNumber}">GROUP NUMBER error</div>
+    <br/>
+    <label for="form">EDUCATION FORM:</label>
+    <select th:field="*{educationForm}" id="form">
+        <option value="FULL-TIME">FULL-TIME</option>
+        <option value="PART-TIME">PART-TIME</option>
+    </select>
+    <br/>
+    <br/>
+    <input type="submit" value="OK"/>
+    <input type="button" onclick="history.back();" value="CANCEL">
+</form>
+
+</body>
+</html>
