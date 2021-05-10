@@ -16,27 +16,38 @@ public class StudentDAO {
         List<Student> students = new ArrayList<>();
 
         try {
+            PreparedStatement getGroupIdStatement =
+                    connection.prepareStatement("SELECT id FROM groups WHERE group_num=?");
+
+            getGroupIdStatement.setInt(1, groupNumber);
+            ResultSet resultSet = getGroupIdStatement.executeQuery();
+            resultSet.next();
+
+            int id = resultSet.getInt("id");
+            getGroupIdStatement.close();
+
+
             PreparedStatement preparedStatement =
                     connection.prepareStatement("SELECT * FROM students WHERE group_num=?");
-            preparedStatement.setInt(1, groupNumber);
+            preparedStatement.setInt(1, id);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            ResultSet resultSet2 = preparedStatement.executeQuery();
+            while (resultSet2.next()){
                 Student student = new Student();
 
-                student.setStudentID(resultSet.getInt("student_id"));
-                student.setName(resultSet.getString("first_name"));
-                student.setSecondName(resultSet.getString("second_name"));
-                student.setPatronymic(resultSet.getString("pantromyc"));
-                boolean form = resultSet.getBoolean("education_form");
+                student.setStudentID(resultSet2.getInt("student_id"));
+                student.setName(resultSet2.getString("first_name"));
+                student.setSecondName(resultSet2.getString("second_name"));
+                student.setPatronymic(resultSet2.getString("patronymic"));
+                boolean form = resultSet2.getBoolean("education_form");
                 if(form){
                     student.setEducationForm("GOVERNMENT");
                 }
                 else {
                     student.setEducationForm("PAID");
                 }
-                student.setGroupNumber(resultSet.getInt("group_num"));
-                student.setBirthday(resultSet.getDate("birthday"));
+                student.setGroupNumber(resultSet2.getInt("group_num"));
+                student.setBirthday(resultSet2.getDate("birthday"));
 
                 students.add(student);
             }
@@ -60,10 +71,10 @@ public class StudentDAO {
             resultSet.next();
 
             student = new Student();
-            student.setStudentID(resultSet.getInt("student_id"));
-            student.setName(resultSet.getString("first_name"));
+            student.setStudentID( resultSet.getInt("student_id"));
+            student.setName(      resultSet.getString("first_name"));
             student.setSecondName(resultSet.getString("second_name"));
-            student.setPatronymic(resultSet.getString("pantromyc"));
+            student.setPatronymic(resultSet.getString("patronymic"));
             boolean form = resultSet.getBoolean("education_form");
             if(form){
                 student.setEducationForm("GOVERNMENT");
@@ -89,16 +100,28 @@ public class StudentDAO {
         }
 
         try {
+            PreparedStatement getGroupIdSet =
+                    connection.prepareStatement("SELECT id FROM groups WHERE group_num=?");
+
+            getGroupIdSet.setInt(1, student.getGroupNumber());
+
+            ResultSet resultSet = getGroupIdSet.executeQuery();
+            resultSet.next();
+
+            int id = resultSet.getInt("id");
+            getGroupIdSet.close();
+
+
             PreparedStatement preparedStatement =
                     connection.prepareStatement("INSERT INTO students VALUES(?, ?, ?, ?, ?, ?, ?)");
 
-            preparedStatement.setInt(1, student.getStudentID());
-            preparedStatement.setString(2, student.getName());
-            preparedStatement.setString(3, student.getSecondName());
-            preparedStatement.setString(4, student.getPatronymic());
+            preparedStatement.setInt(    1, student.getStudentID());
+            preparedStatement.setString( 2, student.getName());
+            preparedStatement.setString( 3, student.getSecondName());
+            preparedStatement.setString( 4, student.getPatronymic());
             preparedStatement.setBoolean(5, educationForm);
-            preparedStatement.setInt(6, student.getGroupNumber());
-            preparedStatement.setDate(7, student.getBirthday());
+            preparedStatement.setInt(    6, id);
+            preparedStatement.setDate(   7, student.getBirthday());
 
             preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
@@ -116,6 +139,17 @@ public class StudentDAO {
         }
 
         try {
+
+            PreparedStatement getGroupIdStatement =
+                    connection.prepareStatement("SELECT id FROM groups WHERE group_num=?");
+
+            getGroupIdStatement.setInt(1, updatedStudent.getGroupNumber());
+            ResultSet resultSet = getGroupIdStatement.executeQuery();
+            resultSet.next();
+
+            int id = resultSet.getInt("id");
+            getGroupIdStatement.close();
+
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE students SET first_name=?, second_name=?, pantromyc=?, education_form=?, group_num=?, birthday=? WHERE student_id=?");
 
@@ -124,7 +158,7 @@ public class StudentDAO {
             preparedStatement.setString(2, updatedStudent.getSecondName());
             preparedStatement.setString(3, updatedStudent.getPatronymic());
             preparedStatement.setBoolean(4, educationForm);
-            preparedStatement.setInt(5, updatedStudent.getGroupNumber());
+            preparedStatement.setInt(5, id);
             preparedStatement.setDate(6, updatedStudent.getBirthday());
             preparedStatement.setInt(7, studentID);
 

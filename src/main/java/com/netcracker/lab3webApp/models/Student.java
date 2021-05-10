@@ -9,6 +9,7 @@ import java.sql.Date;
 
 public class Student {
 
+    private Long id;
     @Min(value = 1000, message = "Student ID should be greater than 1000")
     @Max(value = 9999, message = "Student ID should be less than 9999")
     private int studentID;
@@ -94,5 +95,13 @@ public class Student {
 
     public void setGroupNumber(int groupNumber) {
         this.groupNumber = groupNumber;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

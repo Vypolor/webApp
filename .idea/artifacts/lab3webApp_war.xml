@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="lab3webApp:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>lab3webApp</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="lab3webApp-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="lab3webApp:war exploded" />
+    </root>
+  </artifact>
+</component>

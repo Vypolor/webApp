@@ -2,6 +2,8 @@ package com.netcracker.lab3webApp.models;
 
 public class Group {
 
+
+    private Long id;
     private int groupNumber;
 
     private String educationForm;
@@ -28,5 +30,13 @@ public class Group {
 
     public void setEducationForm(String educationForm) {
         this.educationForm = educationForm;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
